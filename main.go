@@ -37,7 +37,7 @@ func main() {
 var runCommand = cli.Command{
 	Name: "run",
 	Usage: `Create a container with namespace and cgroups limit
-			mydocker run -ti [command]`,
+			docker run -ti [command]`,
 	Flags: []cli.Flag{
 		cli.BoolFlag{
 			Name:  "ti",
@@ -57,7 +57,7 @@ var runCommand = cli.Command{
 
 var initCommand = cli.Command{
 	Name:  "init",
-	Usage: "Init container process run user's process in container. Do not call it outside",
+	Usage: "Init container process run user's process in container.",
 	Action: func(context *cli.Context) error {
 		logg.Infof("init come on")
 		cmd := context.Args().Get(0)
