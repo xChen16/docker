@@ -12,11 +12,15 @@ import (
 var runCommand = cli.Command{
 	Name: "run",
 	Usage: `Create a container with namespace and cgroups limit
-			mydocker run -ti [command]`,
+			docker run -ti [command]`,
 	Flags: []cli.Flag{
 		cli.BoolFlag{
 			Name:  "ti",
 			Usage: "enable tty",
+		},
+		cli.BoolFlag{
+			Name:  "d",
+			Usage: "detach container",
 		},
 		cli.StringFlag{
 			Name:  "m",
@@ -39,18 +43,24 @@ var runCommand = cli.Command{
 		for _, arg := range context.Args() {
 			cmdArray = append(cmdArray, arg)
 		}
-		tty := context.Bool("ti")
+		createTty := context.Bool("ti")
+		detach := context.Bool("d")
+		if createTty && detach {
+			return fmt.Errorf("can not both provided")
+		}
+
 		resConf := &subsystems.ResourceConfig{
 			MemoryLimit: context.String("m"),
 			CpuSet:      context.String("cpuset"),
 			CpuShare:    context.String("cpushare"),
 		}
+		logg.Infof("createTty %v", createTty)
+		//Run(tty, cmdArray, resConf)
 
-		Run(tty, cmdArray, resConf)
+		Run(createTty, cmdArray, resConf)
 		return nil
 	},
 }
-
 var initCommand = cli.Command{
 	Name:  "init",
 	Usage: "Init container process",

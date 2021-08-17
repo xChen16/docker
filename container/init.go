@@ -14,8 +14,10 @@ import (
 
 func RunContainerInitProcess() error {
 	cmdArray := readUserCommand()
-	if cmdArray == nil || len(cmdArray) == 0 {
-		return fmt.Errorf("Run container get user command error, cmdArray is nil")
+	//if cmdArray == nil || len(cmdArray) == 0 {
+	if len(cmdArray) == 0 {
+
+		return fmt.Errorf("run container get user command error, cmdArray is nil")
 	}
 
 	//setUpMount()
@@ -43,9 +45,8 @@ func readUserCommand() []string {
 	return strings.Split(msgStr, " ")
 }
 
-/**
-Init 挂载点
-*/
+//Init 挂载点
+
 func setUpMount() {
 	pwd, err := os.Getwd()
 	if err != nil {
@@ -68,7 +69,7 @@ func pivotRoot(root string) error {
 	  bind mount是把相同的内容换了一个挂载点的挂载方法
 	*/
 	if err := syscall.Mount(root, root, "bind", syscall.MS_BIND|syscall.MS_REC, ""); err != nil {
-		return fmt.Errorf("Mount rootfs to itself error: %v", err)
+		return fmt.Errorf("mount rootfs to itself error: %v", err)
 	}
 	// 创建 rootfs/.pivot_root 存储 old_root
 	pivotDir := filepath.Join(root, ".pivot_root")
