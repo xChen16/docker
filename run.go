@@ -10,7 +10,7 @@ import (
 	logg "github.com/sirupsen/logrus"
 )
 
-func Run(tty bool, comArray []string, res *subsystems.ResourceConfig) {
+func Run(tty bool, comArray []string, res *subsystems.ResourceConfig,contianerName) {
 	parent, writePipe := container.NewParentProcess(tty)
 	if parent == nil {
 		logg.Errorf("New parent process error")
@@ -43,4 +43,17 @@ func sendInitCommand(comArray []string, writePipe *os.File) {
 	logg.Infof("command all is %s", command)
 	writePipe.WriteString(command)
 	writePipe.Close()
+}
+func randStringBytes(n int) string {
+	letterBytes := "1234567890"
+	rand.Seed(time.Now().UnixNano())
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterBytes[rand.Intn(len(letterBytes))]
+	}
+	return string(b)
+}
+
+func recordContainerInfo(){
+	
 }

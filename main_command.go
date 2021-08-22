@@ -34,6 +34,10 @@ var runCommand = cli.Command{
 			Name:  "cpuset",
 			Usage: "cpuset limit",
 		},
+		cli.StringFlag{
+			Name:  "name",
+			Usage: "container name",
+		},
 	},
 	Action: func(context *cli.Context) error {
 		if len(context.Args()) < 1 {
@@ -57,7 +61,8 @@ var runCommand = cli.Command{
 		logg.Infof("createTty %v", createTty)
 		//Run(tty, cmdArray, resConf)
 
-		Run(createTty, cmdArray, resConf)
+		contianerName := context.String("name")
+		Run(createTty, cmdArray, resConf, contianerName)
 		return nil
 	},
 }
