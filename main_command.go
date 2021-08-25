@@ -75,3 +75,12 @@ var initCommand = cli.Command{
 		return err
 	},
 }
+
+var listCommand = cli.Command{
+	Name:  "ps",
+	Usage: "list all the containers",
+	Action: func(context *cli.Context) error {
+		container.ListContainers()
+		return nil
+	},
+}
